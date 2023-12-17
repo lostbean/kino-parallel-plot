@@ -7,7 +7,8 @@ defmodule KinoParallelPlot do
   alias Explorer.Series
   require Explorer.DataFrame
 
-  def new(%{df: df, groups: groups}) do
+  def new(df, opts \\ []) do
+    groups = opts[:groups]
     rs = get_records(%{df: df, groups: groups})
     Kino.JS.new(__MODULE__, rs)
   end
@@ -22,6 +23,7 @@ defmodule KinoParallelPlot do
 
   defp summaries(df, groups) do
     df_series = DataFrame.to_series(df)
+    groups = if groups, do: groups, else: []
     has_groups = length(groups) > 0
 
     for {column, series} <- df_series,
