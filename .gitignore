@@ -28,3 +28,4 @@ kino_parallel_plot-*.tar
 .direnv/
 .vscode/
 .refcode/
+node_modules/
