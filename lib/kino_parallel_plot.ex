@@ -8,16 +8,23 @@ defmodule KinoParallelPlot do
   require Explorer.DataFrame
 
   def new(df, opts \\ []) do
-    groups = opts[:groups]
-    rs = get_records(%{df: df, groups: groups})
+    groups = Keyword.get(opts, :groups)
+    cols = Keyword.get(opts, :cols)
+    rs = get_records(df, groups, cols)
     Kino.JS.new(__MODULE__, rs)
   end
 
-  defp get_records(%{df: df, groups: groups}) do
+  defp get_records(df, groups, cols) do
     lazy = lazy?(df)
+    df = if !is_nil(cols), do: DataFrame.select(df, cols), else: df
     total_rows = if !lazy, do: DataFrame.n_rows(df)
     summaries = if total_rows && total_rows > 0, do: summaries(df, groups)
-    csv = df |> DataFrame.collect() |> DataFrame.dump_csv!()
+
+    csv =
+      df
+      |> DataFrame.collect()
+      |> DataFrame.dump_csv!()
+
     %{"csv" => csv, "summaries" => summaries, "total_rows" => total_rows}
   end
 
