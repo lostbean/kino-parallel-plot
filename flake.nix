@@ -19,17 +19,8 @@
             let
               frameworks = darwin.apple_sdk.frameworks;
               inherit (lib) optional optionals;
-            in [
-              elixir
-              elixir_ls
-              nodejs
-              erlang
-              rebar3
-              dune_3
-              ocaml
-              ocamlPackages.ocaml-lsp
-              ocamlformat
-            ] ++ optionals stdenv.isDarwin [
+            in [ elixir elixir_ls nodejs erlang rebar3 ]
+            ++ optionals stdenv.isDarwin [
               # add macOS headers to build mac_listener and ELXA
               frameworks.CoreServices
               frameworks.CoreFoundation
