@@ -2,15 +2,15 @@ div.parallelCoordinates {
     margin: 2em;
 }
 
-g.inactive path,
-g.active path {
+g.inactive path {
     fill: none;
     stroke: lightgrey;
     stroke-linecap: "round"
 }
 
 g.active path {
-    stroke: #0081af;
+    fill: none;
+    stroke-linecap: "round"
 }
 
 .flex-container {
@@ -19,7 +19,7 @@ g.active path {
 
 .flex-child {
     flex: 1;
-    border: 2px solid yellow;
+    margin: 20px;
 }  
 
 .flex-child:first-child {
