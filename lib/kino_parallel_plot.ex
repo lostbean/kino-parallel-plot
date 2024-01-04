@@ -7,25 +7,31 @@ defmodule KinoParallelPlot do
   alias Explorer.Series
   require Explorer.DataFrame
 
-  def new(df, opts \\ []) do
-    groups = Keyword.get(opts, :groups)
+  def new(df, label_col, opts \\ []) do
+    group_col = Keyword.get(opts, :group_col, label_col)
     cols = Keyword.get(opts, :cols)
-    rs = get_records(df, groups, cols)
+    rs = get_records(df, label_col, group_col, cols)
     Kino.JS.new(__MODULE__, rs)
   end
 
-  defp get_records(df, groups, cols) do
+  defp get_records(df, label_col, group_col, cols) do
     lazy = lazy?(df)
-    df = if !is_nil(cols), do: DataFrame.select(df, cols), else: df
+    df = if !is_nil(cols), do: DataFrame.select(df, [group_col | [label_col | cols]]), else: df
     total_rows = if !lazy, do: DataFrame.n_rows(df)
-    summaries = if total_rows && total_rows > 0, do: summaries(df, groups)
+    summaries = if total_rows && total_rows > 0, do: summaries(df, [group_col])
 
     csv =
       df
       |> DataFrame.collect()
       |> DataFrame.dump_csv!()
 
-    %{"csv" => csv, "summaries" => summaries, "total_rows" => total_rows}
+    %{
+      "csv" => csv,
+      "summaries" => summaries,
+      "total_rows" => total_rows,
+      "label_col" => label_col,
+      "group_col" => group_col
+    }
   end
 
   defp summaries(df, groups) do
