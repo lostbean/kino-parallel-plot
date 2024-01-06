@@ -7,6 +7,8 @@ defmodule KinoParallelPlot do
   alias Explorer.Series
   require Explorer.DataFrame
 
+  @type option :: {:cols, [String.t()]} | {:group_col, String.t()}
+  @spec new(Explorer.DataFrame.t(), String.t(), [option]) :: Kino.JS.t()
   def new(df, label_col, opts \\ []) do
     group_col = Keyword.get(opts, :group_col, label_col)
     cols = Keyword.get(opts, :cols)
