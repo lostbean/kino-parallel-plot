@@ -5,12 +5,16 @@ div.parallelCoordinates {
 g.inactive path {
     fill: none;
     stroke: lightgrey;
-    stroke-linecap: "round"
+    stroke-linecap: "round";
+    stroke-width: 2;
+    stroke-opacity: 0.4;
 }
 
 g.active path {
     fill: none;
-    stroke-linecap: "round"
+    stroke-linecap: "round";
+    stroke-width: 2;
+    stroke-opacity: 0.4;
 }
 
 .flex-container {
